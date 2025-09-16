@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Матрица судьбы</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+<style>
+/* Изолированные стили для матрицы судьбы */
+:root{--main-color:#7F4B53;--second-color:#BF949B;--third-color:#FFF9F9;--color-red:#e54144;--color-orange:#eda26d;--color-yellow:#FBE945;--color-blue:#3F6DE5;--color-blue_light:#53A7ED;--color-purple:#8A59D4;--color-green:#8FD34F}
+.matrix-destiny-container{font-family:'Manrope',Arial,sans-serif;background:#FFFFFF;color:#2D2D2D;min-height:100vh}
+.matrix-destiny-container .birthdate__container{display:flex;align-items:center;gap:10px;width:100%;background:#550D35;border-radius:20px;padding:0 20px}
+.matrix-destiny-container .birthdate__form{display:flex;flex-direction:column;align-items:center;width:70%;padding-bottom:15px;gap:5px}
+.matrix-destiny-container .birthdate__form__title{text-align:center;margin-top:10px;font-size:14px;color:white}
+.matrix-destiny-container .birthdate__form input{font-size:14px;width:85%;border:none;border-bottom:2px solid white;text-align:center;color:white;background-color:transparent;outline:none}
+.matrix-destiny-container .birthdate__btn{display:flex;align-items:center;width:30%}
+.matrix-destiny-container .birthdate__btn__inner{font-size:16px;padding:10px 16px;border-radius:40px;width:100%;border:2px solid var(--third-color);color:var(--main-color);background-color:var(--third-color);transition:all 0.5s ease}
+.matrix-destiny-container .birthdate__btn__inner:hover{background-color:var(--main-color);border:2px solid var(--third-color);color:white}
+.matrix-destiny-container .btn-outline{display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--main-color);color:var(--main-color);background:transparent;border-radius:9999px;padding:12px 24px;font-size:16px;transition:background-color .2s ease,color .2s ease,border-color .2s ease;margin:0.5rem 0}
+.matrix-destiny-container .btn-outline:hover{background:var(--main-color);color:#fff;border-color:var(--main-color)}
+.matrix-destiny-container .btn-small{padding:12px 24px;font-size:16px}
+.matrix-destiny-container .birthdate__age__title{text-align:center;margin-top:10px;font-size:10px;margin-top:8px;border-bottom:2px solid var(--main-color);color:var(--main-color);margin-bottom:10px;padding-bottom:5px}
+.matrix-destiny-container .svg_bg{position:absolute;width:88%;height:88%;z-index:-1;top:1.75rem;left:1.5rem}
+.matrix-destiny-container .svg_bg::before,.matrix-destiny-container .svg_bg::after{content:"";position:absolute;inset:0;-webkit-mask:url('https://static.tildacdn.com/tild6133-6330-4636-a135-633931353239/svg_1739459496162.svg') center/contain no-repeat;mask:url('https://static.tildacdn.com/tild6133-6330-4636-a135-633931353239/svg_1739459496162.svg') center/contain no-repeat}
+.matrix-destiny-container .svg_bg::before{background:#000000;filter:blur(10px);opacity:0.35}
+.matrix-destiny-container .svg_bg::after{background:#F3F3F3}
+.matrix-destiny-container .font_big,.matrix-destiny-container .font_small,.matrix-destiny-container .font_extra_small,.matrix-destiny-container .font_years{text-anchor:middle;fill:white}
+.matrix-destiny-container .font_big{font-size:12px}
+.matrix-destiny-container .font_small{font-size:6px}
+.matrix-destiny-container .font_extra_small{font-size:4.5px}
+.matrix-destiny-container .font_years{font-size:2.5px}
+.circle_fill_maincolor{fill:var(--main-color)}
+.circle_purple{fill:var(--color-purple)}
+.circle_blue{fill:var(--color-blue)}
+.circle_blue_light{fill:var(--color-blue_light)}
+.circle_green{fill:var(--color-green)}
+.circle_orange{fill:var(--color-orange)}
+.circle_yellow{fill:var(--color-yellow)}
+.circle_red{fill:var(--color-red)}
+.matrix-destiny-container .health table{border-spacing:2px}
+.matrix-destiny-container .health .td_padding{padding:5px 16px}
+.matrix-destiny-container .health td{min-width:68px;border-radius:6px;color:white;margin-bottom:50px;text-align:center}
+.matrix-destiny-container .health__title{font-weight:900;color:var(--main-color)!important;padding-bottom:8px}
+.matrix-destiny-container .health td.health__left{text-align:left;min-width:110px}
+.matrix-destiny-container .health .background_purple{background-color:var(--color-purple)}
+.matrix-destiny-container .health .background_blue{background-color:var(--color-blue)}
+.matrix-destiny-container .health .background_blue_light{background-color:var(--color-blue_light)}
+.matrix-destiny-container .health .background_green{background-color:var(--color-green)}
+.matrix-destiny-container .health .background_yellow{background-color:var(--color-yellow)}
+.matrix-destiny-container .health .background_orange{background-color:var(--color-orange)}
+.matrix-destiny-container .health .background_red{background-color:var(--color-red)}
+.matrix-destiny-container .health .background_itogo{background-color:var(--main-color)}
+.matrix-destiny-container .destiny{max-width:458px;padding:20px;border:2px solid var(--main-color);border-radius:20px;margin:0 auto;font-size:10px}
+.matrix-destiny-container .destiny__title{font-weight:700}
+.matrix-destiny-container .destiny__table{display:flex;justify-content:center}
+.matrix-destiny-container .destiny__circle{fill:white;text-anchor:middle;font-weight:100;font-size:14px!important}
+.matrix-destiny-container .prognostika .table{width:100%;margin:auto;box-sizing:border-box;padding:5px 10px;border:2px solid var(--main-color);border-radius:20px}
+.matrix-destiny-container .prognostika .table table{width:100%;border-spacing:0 5px;font-size:7px}
+.matrix-destiny-container .prognostika .table caption{font-size:15px;color:var(--main-color);font-weight:bold;margin-bottom:1rem}
+.matrix-destiny-container .prognostika .table thead{color:var(--main-color)}
+.matrix-destiny-container .prognostika .table td{text-align:center;border-bottom:1px solid var(--main-color)}
+.matrix-destiny-container .prognostika .table__cell{background-color:var(--main-color);color:white;padding:0.3rem;border-radius:6px;min-width:2.5rem}
+.matrix-destiny-container .table__cell--highlight{background-color:var(--second-color);border-bottom:1px solid var(--second-color)!important;border-radius:6px;font-weight:bold}
+@media (max-width:768px){
+.matrix-destiny-container .birthdate__age__title{font-size:1.5rem;font-weight:700;color:var(--main-color);text-align:center;padding:1rem 1.5rem;background:white;border-radius:0.5rem;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);border:2px solid var(--main-color);margin:2rem 0 2rem 0}
+.matrix-destiny-container .flex.flex-row.items-center.justify-center.gap-4.mt-8.w-full.max-w-md.mx-auto{margin-top:3rem;margin-bottom:2rem;gap:1rem;flex-direction:column}
+.matrix-destiny-container .btn-outline{padding:12px 24px;font-size:18px;margin:0.5rem 0}
+.matrix-destiny-container .destiny{max-width:100%;padding:15px;font-size:12px;margin:1rem 0}
+.matrix-destiny-container .health .health__table{padding:15px}
+.matrix-destiny-container .health td{min-width:60px;padding:8px 12px;font-size:12px}
+.matrix-destiny-container .health .td_padding{padding:8px 12px}
+.matrix-destiny-container .destiny__title h3{font-size:18px}
+.matrix-destiny-container .destiny__text{font-size:11px}
+.matrix-destiny-container .destiny__table table{font-size:10px}
+.matrix-destiny-container .destiny__table svg{width:30px;height:30px}
+}
+@media (min-width:414px) and (max-width:768px){
+.matrix-destiny-container .svg_bg{width:90%;height:90%;top:1rem;left:1rem}
+.matrix-destiny-container .font_big{font-size:10px}
+.matrix-destiny-container .font_small{font-size:5px}
+.matrix-destiny-container .font_extra_small{font-size:4px}
+.matrix-destiny-container .font_years{font-size:2px}
+}
+@media (max-width:413px){
+.matrix-destiny-container .birthdate__btn__inner{border-radius:30%!important;font-size:14px!important;padding:8px 12px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.matrix-destiny-container .btn-outline{border-radius:30%!important;font-size:14px!important;padding:8px 12px!important;font-weight:600!important;color:#000000!important;border-color:#000000!important}
+.matrix-destiny-container .btn-outline:hover{background:#000000!important;color:#ffffff!important;border-color:#000000!important}
+.matrix-destiny-container .birthdate__container{padding:0 15px!important}
+.matrix-destiny-container .birthdate__form{width:65%!important}
+.matrix-destiny-container .birthdate__btn{width:35%!important}
+}
+/* Изолированные стили для кнопок */
+.matrix-destiny-container .calculate-btn{border-radius:30%!important;font-size:14px!important;padding:8px 12px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.matrix-destiny-container .next-step-btn{border-radius:30%!important;font-size:14px!important;padding:8px 12px!important;font-weight:600!important;color:#000000!important;border-color:#000000!important}
+.matrix-destiny-container .next-step-btn:hover{background:#000000!important;color:#ffffff!important;border-color:#000000!important}
+</style>
+</head>
+<body class="bg-[#FFF9F9] min-h-screen font-[Manrope] flex flex-col items-center justify-start p-8">
+<div class="matrix-destiny-container max-w-6xl w-full mx-auto px-4">
+<h1 class="text-5xl font-extrabold text-center text-[var(--main-color)] leading-tight mb-6">РАСЧЕТ МАТРИЦЫ СУДЬБЫ</h1>
+<p class="text-center text-xl text-[var(--main-color)] font-normal mb-12">точный калькулятор</p>
+<div class="flex flex-col lg:flex-row items-start justify-center gap-8 w-full max-w-7xl mx-auto">
+<div class="flex-1 w-full flex flex-col items-center justify-start space-y-8">
+<div class="birthdate w-full max-w-md">
+<div class="birthdate__container rounded-xl shadow-lg">
+<div class="birthdate__form">
+<div class="birthdate__form__title text-white">Введите дату рождения</div>
+<input type="text" id="birthdate" class="bg-transparent border-b-2 border-white text-white text-center text-lg outline-none placeholder-white::placeholder" placeholder="дд.мм.гггг">
+</div>
+<div class="birthdate__btn">
+<button class="birthdate__btn__inner calculate-btn w-full rounded-full border-2 border-[var(--third-color)] bg-[var(--third-color)] text-[var(--main-color)] hover:bg-[var(--main-color)] hover:text-white transition-all duration-500 font-semibold text-base px-6 py-3">Рассчитать</button>
+</div>
+</div>
+<div class="birthdate__age mt-4">
+<div class="birthdate__age__title text-[var(--main-color)] text-xl font-bold text-center" id="ageDisplay"></div>
+</div>
+</div>
+<div class="w-full flex items-center justify-center gap-6 my-8">
+<h2 class="text-xl font-bold text-[var(--main-color)]">Таблица энергий года</h2>
+<button class="btn-outline btn-small" id="toggle-button">Показать таблицу</button>
+</div>
+<div class="prognostika w-full hidden" id="my-table">
+<div class="table rounded-2xl p-6 border-2 border-[var(--main-color)]">
+<table class="w-full">
+<caption>Таблица энергий года</caption>
+<thead>
+<tr class="table__row table__row--header text-[var(--main-color)]">
+<th>Год</th><th>Энергия 1</th><th>Энергия 2</th><th>Энергия 3</th><th>Год</th><th>Энергия 1</th><th>Энергия 2</th><th>Энергия 3</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+<div class="w-full relative mt-8 flex justify-center items-center max-w-lg mx-auto">
+<div class="svg_bg"></div>
+<svg id="svg_x1" version="1.1" viewBox="12 10 230 230" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto max-w-md">
+<g>
+<path d="M 122,29 A 14,14 0 0 1 132,29 L 193,54 A 14,14 0 0 1 201,63 L 225.5,123 A 14,14 0 0 1 225,132 L 200,193 A 14,14 0 0 1 193,200 L 133,225 A 14,14 0 0 1 122,225 L 59,199 A 14,14 0 0 1 53.5,192 L 28.5,130 A 10,10 0 0 1 28.5,124 L 54.5,60 A 11,11 0 0 1 62,54 Z" style="fill:none; stroke:#7F4B53; stroke-width:0.3;"></path>
+</g>
+<g class="layer1" stroke="#7F4B53" stroke-width=".24">
+<rect x="63.360390" y="63.360390" width="127" height="127" fill="none" opacity=".999"></rect>
+<line x1="127" y1="37" x2="127" y2="217"></line>
+<line x1="37" y1="127" x2="217" y2="127"></line>
+<line x1="37" y1="127" x2="127" y2="37"></line>
+<line x1="37" y1="127" x2="127" y2="217"></line>
+<line x1="127" y1="37" x2="217" y2="127"></line>
+<line x1="127" y1="217" x2="217" y2="127"></line>
+<line x1="127" y1="190" x2="190" y2="127" style="stroke:#7F4B53;stroke-width:0.24;stroke-miterlimit:4;stroke-dasharray:0.96000001,1.92000001;stroke-dashoffset:0"></line>
+<line x1="127" y1="203" x2="203" y2="127"></line>
+<line x1="63.360390" y1="63.360390" x2="190.639610" y2="190.639610" style="stroke:#7F4B53;stroke-width:0.24;stroke-miterlimit:4;stroke-dasharray:0.96000001,1.92000001;stroke-dashoffset:0"></line>
+<line x1="63.360390" y1="190.639610" x2="190.639610" y2="63.360390" style="stroke:#7F4B53;stroke-width:0.24;stroke-miterlimit:4;stroke-dasharray:0.96000001,1.92000001;stroke-dashoffset:0"></line>
+<text x="-42.400311" y="177.58769" transform="rotate(-45)" style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#7F4B53;fill-opacity:1;stroke:none;stroke-width:0.264583">род матери</text>
+<text x="198.83521" y="-1.8544561" transform="rotate(45)" style="font-style:normal;font-weight:normal;font-size:3.52777px;line-height:1.25;font-family:sans-serif;fill:#7F4B53;fill-opacity:1;stroke:none;stroke-width:0.264583">род отца</text>
+</g>
+<g class="layer2" stroke-width=".45">
+<circle id="circle_AE_inner" cx="54" cy="127" r="6" class="circle_blue"></circle>
+<text id="circle_AE_inner_text" x="54" y="129" class="font_small"></text>
+<circle id="circle_AE" cx="68" cy="127" r="6" class="circle_blue_light"></circle>
+<text id="circle_AE_text" x="68" y="129" class="font_small"></text>
+<circle id="circle_FE_inner" cx="75" cy="75" r="6" class="circle_fill_maincolor"></circle>
+<text id="circle_FE_inner_text" x="75" y="77" class="font_small"></text>
+<circle id="circle_FE" cx="85" cy="85" r="6" class="circle_fill_maincolor"></circle>
+<text id="circle_FE_text" x="85" y="87" class="font_small"></text>
+<circle id="circle_BE_inner" cx="127" cy="54" r="6" class="circle_blue"></circle>
+<text id="circle_BE_inner_text" x="127" y="56" class="font_small"></text>
+<circle id="circle_BE" cx="127" cy="68" r="6" class="circle_blue_light"></circle>
+<text id="circle_BE_text" x="127" y="70" class="font_small"></text>
+<circle id="circle_GE_inner" cx="178" cy="75" r="6" class="circle_fill_maincolor"></circle>
+<text id="circle_GE_inner_text" x="178" y="77" class="font_small"></text>
+<circle id="circle_GE" cx="168" cy="85" r="6" class="circle_fill_maincolor"></circle>
+<text id="circle_GE_text" x="168" y="87" class="font_small"></text>
+<circle id="circle_CE_inner" cx="200" cy="127" r="6" class="circle_fill_maincolor"></circle>
+<text id="circle_CE_inner_text" x="200" y="129" class="font_small"></text>
+<circle id="circle_CE" cx="186" cy="127" r="6" class="circle_orange"></circle>
+<text id="circle_CE_text" x="186" y="129" class="font_small"></text>
+<circle id="circle_HE_inner" cx="178" cy="178" r="6" class="circle_fill_maincolor"></circle>
+<text id="circle_HE_inner_text" x="178" y="180" class="font_small"></text>
+<circle id="circle_HE" cx="168" cy="168" r="6" class="circle_fill_maincolor"></circle>
+<text id="circle_HE_text" x="168" y="170" class="font_small"></text>
+<circle id="circle_DE_inner" cx="127" cy="200" r="6" class="circle_fill_maincolor"></circle>
+<text id="circle_DE_inner_text" x="127" y="202" class="font_small"></text>
+<circle id="circle_DE" cx="127" cy="186" r="6" class="circle_orange"></circle>
+<text id="circle_DE_text" x="127" y="188" class="font_small"></text>
+<circle id="circle_IE_inner" cx="76" cy="178" r="6" class="circle_fill_maincolor"></circle>
+<text id="circle_IE_inner_text" x="76" y="180" class="font_small"></text>
+<circle id="circle_IE" cx="86" cy="168" r="6" class="circle_fill_maincolor"></circle>
+<text id="circle_IE_text" x="86" y="170" class="font_small"></text>
+<circle id="circle_M" cx="158" cy="158" r="4" class="circle_fill_maincolor"></circle>
+<text id="circle_M_text" x="157.8" y="159.5" class="font_extra_small"></text>
+<circle id="circle_O" cx="172" cy="145" r="4" class="circle_fill_maincolor"></circle>
+<text id="circle_O_text" x="172" y="146.5" class="font_extra_small"></text>
+<circle id="circle_N" cx="144" cy="172" r="4" class="circle_fill_maincolor"></circle>
+<text id="circle_N_text" x="144" y="173.5" class="font_extra_small"></text>
+<circle id="circle_P" cx="97" cy="127" r="4" class="circle_green"></circle>
+<text id="circle_P_text" x="97" y="128.7" class="font_extra_small"></text>
+<circle id="circle_R" cx="127" cy="95" r="4" class="circle_green"></circle>
+<text id="circle_R_text" x="127" y="96.5" class="font_extra_small"></text>
+</g>
+<g class="layer3">
+<circle class="circle_A circle_purple" cx="37" cy="127" r="9.34" stroke-width="0.45"></circle>
+<text id="circle_A_text" x="36.8" y="131.5" class="font_big"></text>
+<circle class="circle_B circle_purple" cx="127" cy="37" r="9.34" stroke-width="0.45"></circle>
+<text id="circle_B_text" x="127" y="41" class="font_big"></text>
+<circle class="circle_C circle_red" cx="217" cy="127" r="9.34" stroke-width="0.45"></circle>
+<text id="circle_C_text" x="217" y="131.5" class="font_big"></text>
+<circle class="circle_D circle_red" cx="127" cy="217" r="9.34" stroke-width="0.45"></circle>
+<text id="circle_D_text" x="127" y="221.5" class="font_big"></text>
+<circle class="circle_E circle_yellow" cx="127" cy="127" r="10" stroke-width="0.45"></circle>
+<text id="circle_E_text" x="127" y="131.2" class="font_big"></text>
+<circle class="circle_F fill_stroke_maincolor" cx="63.360390" cy="63.360390" r="9.34" stroke-width="0.45"></circle>
+<text id="circle_F_text" x="63.3" y="67.5" class="font_big"></text>
+<circle class="circle_G fill_stroke_maincolor" cx="190.639610" cy="63.360390" r="9.34" stroke-width="0.45"></circle>
+<text id="circle_G_text" x="190.7" y="67.5" class="font_big"></text>
+<circle class="circle_H fill_stroke_maincolor" cx="190.639610" cy="190.639610" r="9.34" stroke-width="0.45"></circle>
+<text id="circle_H_text" x="190.3" y="195" class="font_big"></text>
+<circle class="circle_I fill_stroke_maincolor" cx="63.360390" cy="190.639610" r="9.34" stroke-width="0.45"></circle>
+<text id="circle_I_text" x="63" y="195" class="font_big"></text>
+</g>
+<g class="layer4">
+<circle class="circle_2 circle_fill_maincolor" cx="32.2" cy="115" r="0.7"></circle>
+<text id="circle_2_text" x="29" y="114" class="font_years"></text>
+<circle class="circle_3 circle_fill_maincolor" cx="35.2" cy="107.5" r="0.7"></circle>
+<text id="circle_3_text" x="31" y="107" class="font_years"></text>
+<circle class="circle_4 circle_fill_maincolor" cx="38.3" cy="100" r="0.7"></circle>
+<text id="circle_4_text" x="34.5" y="100" class="font_years"></text>
+<circle class="circle_5 circle_fill_maincolor" cx="41.3" cy="92.5" r="0.7"></circle>
+<text id="circle_5_text" x="37" y="92" class="font_years"></text>
+<circle class="circle_6 circle_fill_maincolor" cx="44.3" cy="85" r="0.7"></circle>
+<text id="circle_6_text" x="40" y="85" class="font_years"></text>
+<circle class="circle_7 circle_fill_maincolor" cx="47.4" cy="77.5" r="0.7"></circle>
+<text id="circle_7_text" x="43.5" y="77.5" class="font_years"></text>
+<circle class="circle_8 circle_fill_maincolor" cx="50" cy="71" r="0.7"></circle>
+<text id="circle_8_text" x="46.5" y="71" class="font_years"></text>
+</g>
+<g class="layer5 circle_fill_maincolor" font-family="Manrope" font-size="2.8">
+<text class="label-0" x="17" y="128">0 лет</text>
+<text class="label-10" x="45" y="55">10 лет</text>
+<text class="label-20" x="122" y="25.5">20 лет</text>
+<text class="label-30" x="199" y="55">30 лет</text>
+<text class="label-40" x="229" y="128">40 лет</text>
+<text class="label-50" x="200" y="199">50 лет</text>
+<text class="label-60" x="122" y="231">60 лет</text>
+<text class="label-70" x="44" y="199">70 лет</text>
+</g>
+<g class="layer6 circle_fill_maincolor" font-family="Manrope" font-size="1.8" alignment-baseline="middle" text-anchor="middle">
+<text x="36.5" y="116" class="fw_bold">1-2,5</text>
+<text x="40" y="108" class="fw_bold">2,5-3,5</text>
+<text x="42.5" y="101" class="fw_bold">3,5-4</text>
+<text x="45.5" y="93.5" class="fw_bold">5 лет</text>
+<text x="48.5" y="86" class="fw_bold">6-7,5</text>
+<text x="52.3" y="78.5" class="fw_bold">7,5-8,5</text>
+<text x="54" y="71.5" class="fw_bold">8,5-9</text>
+</g>
+<g>
+<circle id="circle_S" cx="145" cy="127" r="6" class="circle_fill_maincolor"></circle>
+<text id="circle_S_text" x="145" y="129" class="font_small"></text>
+<circle id="circle_T" cx="157" cy="127" r="4" class="circle_fill_maincolor"></circle>
+<text id="circle_T_text" x="157" y="128.6" class="font_extra_small"></text>
+</g>
+</svg>
+</div>
+<div class="flex flex-row items-center justify-center gap-6 mt-12 w-full max-w-md mx-auto">
+<button class="btn-outline px-6 py-3 text-base font-medium" id="download-png">Сохранить Матрицу</button>
+<a href="#health" class="btn-outline next-step-btn px-6 py-3 text-base font-medium">Следующий шаг</a>
+</div>
+</div>
+<aside id="destiny" class="w-full lg:w-[420px] shrink-0 grid gap-6">
+<div class="destiny w-full rounded-2xl p-6 border-2 border-[var(--main-color)]">
+<div class="destiny__sky mb-4">
+<div class="destiny__title flex items-center mb-2">
+<h3 class="text-xl font-bold">Поиск себя:</h3>
+</div>
+<div class="destiny__text text-sm">Соединение мужского и женского. Выстраивание взаимоотношений. Способности, навыки, умения.</div>
+<div class="destiny__table mt-4">
+<table>
+<tbody>
+<tr>
+<td>Небо:</td>
+<td width="1">
+<div class="destiny__sky__svg">
+<svg width="36" height="36">
+<circle id="circle_sky" cx="18" cy="18" r="17" class="circle_fill_maincolor"></circle>
+<text id="circle_sky_text" x="17.5" y="23" class="destiny__circle"></text>
+</svg>
+</div>
+</td>
+<td width="1" rowspan="2">
+<svg id="Layer_1" height="90" enable-background="new 0 0 512 512" viewBox="190 55 140 400" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="m195 420.8c0-6.3 5.1-11.4 11.4-11.4h15c9.3 0 15.5-2.9 18.4-8.6s4.4-13.4 4.4-23v-74.4c0-14.7 3.7-25.7 11.2-33s17.1-12.5 28.8-15.4v-.8c-11.7-3.5-21.3-9.1-28.8-17s-11.2-19.3-11.2-34.2v-70.4c0-9.9-1.4-17.3-4.2-22.4s-8.9-7.6-18.2-7.6h-15.4c-6.3 0-11.4-5.1-11.4-11.4 0-6.3 5.1-11.4 11.4-11.4h23c5.3 0 10.6.9 15.8 2.6s9.8 4.3 13.8 7.8 7.3 7.9 9.8 13.4 3.8 11.9 3.8 19.4v76c0 13.1 3.9 23.5 11.8 31.4 5.9 5.9 13.4 9.6 22.6 11.3 5.8 1 10 6.2 10 12.1 0 5.9-4.2 11.1-10.1 12.2-9 1.6-16.4 5.2-22.3 10.8-8 7.6-12 18.2-12 31.8v80.8c0 7.5-1.3 13.9-3.8 19.4s-5.8 9.9-9.8 13.4-8.5 6-13.6 7.6-10.3 2.4-15.6 2.4h-23.4c-6.3 0-11.4-5.1-11.4-11.4z" fill="#7F4B53"></path>
+</g>
+</svg>
+</td>
+<td rowspan="2">
+<svg width="36" height="36">
+<circle id="circle_se_total" cx="17" cy="18" r="17" class="circle_fill_maincolor"></circle>
+<text id="circle_se_total_text" x="17" y="24" class="destiny__circle"></text>
+</svg>
+</td>
+</tr>
+<tr>
+<td>Земля:</td>
+<td>
+<svg width="36" height="36">
+<circle id="circle_earth" cx="18" cy="18" r="17" class="circle_fill_maincolor"></circle>
+<text id="circle_earth_text" x="17.5" y="24" class="destiny__circle"></text>
+</svg>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="destiny__society mb-4">
+<div class="destiny__title flex items-center mb-2">
+<h3 class="text-xl font-bold">Социализация:</h3>
+</div>
+<div class="destiny__text text-sm">Социальная и родовая системы. Результаты и признание в социуме.</div>
+<div class="destiny__table mt-4">
+<table>
+<tbody>
+<tr>
+<td>М:</td>
+<td width="1">
+<div class="destiny__sky__svg">
+<svg width="36" height="36">
+<circle id="circle_man" cx="18" cy="18" r="17" class="circle_fill_maincolor"></circle>
+<text id="circle_man_text" x="17.5" y="23" class="destiny__circle"></text>
+</svg>
+</div>
+</td>
+<td width="1" rowspan="2">
+<svg id="Layer_1" height="90" enable-background="new 0 0 512 512" viewBox="190 55 140 400" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="m195 420.8c0-6.3 5.1-11.4 11.4-11.4h15c9.3 0 15.5-2.9 18.4-8.6s4.4-13.4 4.4-23v-74.4c0-14.7 3.7-25.7 11.2-33s17.1-12.5 28.8-15.4v-.8c-11.7-3.5-21.3-9.1-28.8-17s-11.2-19.3-11.2-34.2v-70.4c0-9.9-1.4-17.3-4.2-22.4s-8.9-7.6-18.2-7.6h-15.4c-6.3 0-11.4-5.1-11.4-11.4 0-6.3 5.1-11.4 11.4-11.4h23c5.3 0 10.6.9 15.8 2.6s9.8 4.3 13.8 7.8 7.3 7.9 9.8 13.4 3.8 11.9 3.8 19.4v76c0 13.1 3.9 23.5 11.8 31.4 5.9 5.9 13.4 9.6 22.6 11.3 5.8 1 10 6.2 10 12.1 0 5.9-4.2 11.1-10.1 12.2-9 1.6-16.4 5.2-22.3 10.8-8 7.6-12 18.2-12 31.8v80.8c0 7.5-1.3 13.9-3.8 19.4s-5.8 9.9-9.8 13.4-8.5 6-13.6 7.6-10.3 2.4-15.6 2.4h-23.4c-6.3 0-11.4-5.1-11.4-11.4z" fill="#7F4B53"></path>
+</g>
+</svg>
+</td>
+<td rowspan="2">
+<svg width="36" height="36">
+<circle id="circle_mw_total" cx="17" cy="18" r="17" class="circle_fill_maincolor"></circle>
+<text id="circle_mw_total_text" x="17" y="23" class="destiny__circle"></text>
+</svg>
+</td>
+</tr>
+<tr>
+<td>Ж:</td>
+<td>
+<svg width="36" height="36">
+<circle id="circle_woman" cx="18" cy="18" r="17" class="circle_fill_maincolor"></circle>
+<text id="circle_woman_text" x="17.5" y="23" class="destiny__circle"></text>
+</svg>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="destiny__spirit mb-4">
+<div class="destiny__title title-svg flex items-center">
+<h3 class="text-xl font-bold">Духовная гармония</h3>
+<svg width="36" height="36">
+<circle id="circle_spirit" cx="18" cy="17" r="17" class="circle_fill_maincolor"></circle>
+<text id="circle_spirit_text" x="17.5" y="23" class="destiny__circle"></text>
+</svg>
+</div>
+<div class="destiny__text text-sm">Духовный зачет. Кто я для бога? Где божественное во мне?</div>
+</div>
+<div class="destiny__planet">
+<div class="destiny__title title-svg flex items-center">
+<h3 class="text-xl font-bold">Планетарное</h3>
+<svg width="36" height="36">
+<circle id="circle_planet" cx="18" cy="17" r="17" class="circle_fill_maincolor"></circle>
+<text id="circle_planet_text" x="17.5" y="23" class="destiny__circle"></text>
+</svg>
+</div>
+<div class="destiny__text text-sm">Планетарное предназначение человека</div>
+</div>
+</div>
+<div id="health" class="health w-full">
+<div class="health__table rounded-2xl p-6 border-2 border-[var(--main-color)] text-sm">
+<div class="health__table__title text-xl font-bold text-[var(--main-color)] mb-4">КАРТА ЗДОРОВЬЯ</div>
+<table>
+<tbody>
+<tr class="background_purple">
+<td class="health__left td_padding">7. Сахасрара</td>
+<td id="physics_7" class="cell_sahasrara"></td>
+<td id="energy_7" class="cell_sahasrara"></td>
+<td id="emotion_7" class="cell_sahasrara"></td>
+</tr>
+<tr class="background_blue">
+<td class="health__left td_padding">6. Аджна</td>
+<td id="physics_6" class="cell_sahasrara"></td>
+<td id="energy_6" class="cell_sahasrara"></td>
+<td id="emotion_6" class="cell_sahasrara"></td>
+</tr>
+<tr class="background_blue_light">
+<td class="health__left td_padding">5. Вишудха</td>
+<td id="physics_5" class="cell_sahasrara"></td>
+<td id="energy_5" class="cell_sahasrara"></td>
+<td id="emotion_5" class="cell_sahasrara"></td>
+</tr>
+<tr class="background_green">
+<td class="health__left td_padding">4. Анахата</td>
+<td id="physics_4" class="cell_sahasrara"></td>
+<td id="energy_4" class="cell_sahasrara"></td>
+<td id="emotion_4" class="cell_sahasrara"></td>
+</tr>
+<tr class="background_yellow">
+<td class="health__left td_padding">3. Манипура</td>
+<td id="physics_3" class="cell_sahasrara"></td>
+<td id="energy_3" class="cell_sahasrara"></td>
+<td id="emotion_3" class="cell_sahasrara"></td>
+</tr>
+<tr class="background_orange">
+<td class="health__left td_padding">2. Свадхистана</td>
+<td id="physics_2" class="cell_sahasrara"></td>
+<td id="energy_2" class="cell_sahasrara"></td>
+<td id="emotion_2" class="cell_sahasrara"></td>
+</tr>
+<tr class="background_red">
+<td class="health__left td_padding">1. Муладхара</td>
+<td id="physics_1" class="cell_sahasrara"></td>
+<td id="energy_1" class="cell_sahasrara"></td>
+<td id="emotion_1" class="cell_sahasrara"></td>
+</tr>
+<tr class="background_itogo">
+<td class="health__left td_padding">Итого</td>
+<td id="physics_all" class="cell_sahasrara"></td>
+<td id="energy_all" class="cell_sahasrara"></td>
+<td id="emotion_all" class="cell_sahasrara"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</aside>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+let circle_A=[],circle_B=[],circle_C=[],circle_D=[],circle_E=[],circle_F=[],circle_G=[],circle_H=[],circle_I=[],circle_M=[],circle_O=[],circle_N=[],circle_P=[],circle_R=[],circle_AE=[],circle_BE=[],circle_CE=[],circle_DE=[],circle_FE=[],circle_GE=[],circle_HE=[],circle_IE=[],circle_AE_inner=[],circle_BE_inner=[],circle_CE_inner=[],circle_DE_inner=[],circle_FE_inner=[],circle_GE_inner=[],circle_HE_inner=[],circle_IE_inner=[];
+let circle_2=[],circle_3=[],circle_4=[],circle_5=[],circle_6=[],circle_7=[],circle_8=[];
+let circle_S=[],circle_T=[],circle_sky=[],circle_earth=[],circle_se_total=[],circle_man=[],circle_woman=[],circle_mw_total=[],circle_spirit=[],circle_planet=[],physics_1=[],physics_2=[],physics_3=[],physics_4=[],physics_5=[],physics_6=[],physics_7=[],physics_all=[],energy_1=[],energy_2=[],energy_3=[],energy_4=[],energy_5=[],energy_6=[],energy_7=[],energy_all=[],emotion_1=[],emotion_2=[],emotion_3=[],emotion_4=[],emotion_5=[],emotion_6=[],emotion_7=[],emotion_all=[];
+document.getElementById('birthdate').addEventListener('input',function(e){let value=e.target.value.replace(/\D/g,'');let dd=value.slice(0,2);let mm=value.slice(2,4);let yyyy=value.slice(4,8);if(dd>31){dd='31'}if(mm>12){mm='12'}let formattedValue=dd;if(value.length>2){formattedValue+='.'+mm}if(value.length>4){formattedValue+='.'+yyyy}e.target.value=formattedValue});
+document.querySelector('.birthdate__btn__inner').addEventListener('click',function(i){if(document.getElementById('birthdate').value==''){console.log('Нужно ввести дату рождения')}else{let dd=document.getElementById('birthdate').value.split('.')[0];let mm=document.getElementById('birthdate').value.split('.')[1];let yyyy=document.getElementById('birthdate').value.split('.')[2];calculate(dd,mm,yyyy);const age=calculateAgeText(dd,mm,yyyy);document.getElementById('ageDisplay').textContent=`${age}`;calculate_health();calculate_destiny()}});
+function calculateAgeText(dd,mm,yyyy){const birthDate=new Date(yyyy,mm-1,dd);const today=new Date();let age=today.getFullYear()-birthDate.getFullYear();const monthDifference=today.getMonth()-birthDate.getMonth();if(monthDifference<0||(monthDifference===0&&today.getDate()<birthDate.getDate())){age--}let textAge;const lastDigit=age%10;const lastTwoDigits=age%100;if(age<0){textAge=`Введите год до ${today.getFullYear()}`}else if(lastDigit===1&&lastTwoDigits!==11){textAge=`Возраст: ${age} год`}else if((lastDigit===2||lastDigit===3||lastDigit===4)&&(lastTwoDigits<12||lastTwoDigits>14)){textAge=`Возраст: ${age} года`}else{textAge=`Возраст: ${age} лет`}return`${textAge}`}
+function calculate(dd,mm,yyyy){for(let i=0;i<1;i++){circle_A[i]=parseInt(base22(dd));circle_B[i]=parseInt(base22(mm));circle_C[i]=parseInt(base22(yyyy));circle_D[i]=parseInt(base22(circle_A[i]+circle_B[i]+circle_C[i]));circle_E[i]=parseInt(base22(circle_A[i]+circle_B[i]+circle_C[i]+circle_D[i]));circle_F[i]=parseInt(base22(circle_A[i]+circle_B[i]));circle_G[i]=parseInt(base22(circle_B[i]+circle_C[i]));circle_H[i]=parseInt(base22(circle_C[i]+circle_D[i]));circle_I[i]=parseInt(base22(circle_A[i]+circle_D[i]));circle_S[i]=parseInt(base22(circle_F[i]+circle_G[i]+circle_I[i]+circle_H[i]));circle_T[i]=parseInt(base22(circle_E[i]+circle_S[i]));circle_AE[i]=parseInt(base22(circle_A[i]+circle_E[i]));circle_BE[i]=parseInt(base22(circle_B[i]+circle_E[i]));circle_CE[i]=parseInt(base22(circle_C[i]+circle_E[i]));circle_DE[i]=parseInt(base22(circle_D[i]+circle_E[i]));circle_FE[i]=parseInt(base22(circle_F[i]+circle_S[i]));circle_GE[i]=parseInt(base22(circle_G[i]+circle_S[i]));circle_HE[i]=parseInt(base22(circle_H[i]+circle_S[i]));circle_IE[i]=parseInt(base22(circle_I[i]+circle_S[i]));circle_AE_inner[i]=parseInt(base22(circle_A[i]+circle_AE[i]));circle_BE_inner[i]=parseInt(base22(circle_B[i]+circle_BE[i]));circle_CE_inner[i]=parseInt(base22(circle_C[i]+circle_CE[i]));circle_DE_inner[i]=parseInt(base22(circle_D[i]+circle_DE[i]));circle_FE_inner[i]=parseInt(base22(circle_F[i]+circle_FE[i]));circle_GE_inner[i]=parseInt(base22(circle_G[i]+circle_GE[i]));circle_HE_inner[i]=parseInt(base22(circle_H[i]+circle_HE[i]));circle_IE_inner[i]=parseInt(base22(circle_I[i]+circle_IE[i]));circle_M[i]=parseInt(base22(circle_CE[i]+circle_DE[i]));circle_O[i]=parseInt(base22(circle_CE[i]+circle_M[i]));circle_N[i]=parseInt(base22(circle_DE[i]+circle_M[i]));circle_P[i]=parseInt(base22(circle_AE[i]+circle_E[i]));circle_R[i]=parseInt(base22(circle_BE[i]+circle_E[i]));circle_5[i]=parseInt(base22(circle_A[i]+circle_F[i]));circle_3[i]=parseInt(base22(circle_A[i]+circle_5[i]));circle_7[i]=parseInt(base22(circle_5[i]+circle_F[i]));circle_2[i]=parseInt(base22(circle_A[i]+circle_3[i]));circle_4[i]=parseInt(base22(circle_3[i]+circle_5[i]));circle_6[i]=parseInt(base22(circle_5[i]+circle_7[i]));circle_8[i]=parseInt(base22(circle_7[i]+circle_F[i]));document.getElementById("circle_A_text").textContent=circle_A[i];document.getElementById("circle_B_text").textContent=circle_B[i];document.getElementById("circle_C_text").textContent=circle_C[i];document.getElementById("circle_D_text").textContent=circle_D[i];document.getElementById("circle_E_text").textContent=circle_E[i];document.getElementById("circle_F_text").textContent=circle_F[i];document.getElementById("circle_G_text").textContent=circle_G[i];document.getElementById("circle_H_text").textContent=circle_H[i];document.getElementById("circle_I_text").textContent=circle_I[i];document.getElementById("circle_M_text").textContent=circle_M[i];document.getElementById("circle_O_text").textContent=circle_O[i];document.getElementById("circle_N_text").textContent=circle_N[i];document.getElementById("circle_P_text").textContent=circle_P[i];document.getElementById("circle_R_text").textContent=circle_R[i];document.getElementById("circle_AE_text").textContent=circle_AE[i];document.getElementById("circle_BE_text").textContent=circle_BE[i];document.getElementById("circle_CE_text").textContent=circle_CE[i];document.getElementById("circle_DE_text").textContent=circle_DE[i];document.getElementById("circle_FE_text").textContent=circle_FE[i];document.getElementById("circle_GE_text").textContent=circle_GE[i];document.getElementById("circle_HE_text").textContent=circle_HE[i];document.getElementById("circle_IE_text").textContent=circle_IE[i];document.getElementById("circle_AE_inner_text").textContent=circle_AE_inner[i];document.getElementById("circle_BE_inner_text").textContent=circle_BE_inner[i];document.getElementById("circle_CE_inner_text").textContent=circle_CE_inner[i];document.getElementById("circle_DE_inner_text").textContent=circle_DE_inner[i];document.getElementById("circle_FE_inner_text").textContent=circle_FE_inner[i];document.getElementById("circle_GE_inner_text").textContent=circle_GE_inner[i];document.getElementById("circle_HE_inner_text").textContent=circle_HE_inner[i];document.getElementById("circle_IE_inner_text").textContent=circle_IE_inner[i];document.getElementById("circle_2_text").textContent=circle_2[i];document.getElementById("circle_3_text").textContent=circle_3[i];document.getElementById("circle_4_text").textContent=circle_4[i];document.getElementById("circle_5_text").textContent=circle_5[i];document.getElementById("circle_6_text").textContent=circle_6[i];document.getElementById("circle_7_text").textContent=circle_7[i];document.getElementById("circle_8_text").textContent=circle_8[i];document.getElementById("circle_S_text").textContent=circle_S[i];document.getElementById("circle_T_text").textContent=circle_T[i]}}
+function calculate_health(){let i=0;physics_7[i]=circle_A[i];physics_6[i]=circle_AE_inner[i];physics_5[i]=circle_AE[i];physics_4[i]=circle_P[i];physics_3[i]=circle_E[i];physics_2[i]=circle_CE[i];physics_1[i]=circle_C[i];physics_all[i]=parseInt(base22(physics_1[i]+physics_2[i]+physics_3[i]+physics_4[i]+physics_5[i]+physics_6[i]+physics_7[i]));energy_7[i]=circle_B[i];energy_6[i]=circle_BE_inner[i];energy_5[i]=circle_BE[i];energy_4[i]=circle_R[i];energy_3[i]=circle_E[i];energy_2[i]=circle_DE[i];energy_1[i]=circle_D[i];energy_all[i]=parseInt(base22(energy_1[i]+energy_2[i]+energy_3[i]+energy_4[i]+energy_5[i]+energy_6[i]+energy_7[i]));emotion_7[i]=parseInt(base22(physics_7[i]+energy_7[i]));emotion_6[i]=parseInt(base22(physics_6[i]+energy_6[i]));emotion_5[i]=parseInt(base22(physics_5[i]+energy_5[i]));emotion_4[i]=parseInt(base22(physics_4[i]+energy_4[i]));emotion_3[i]=parseInt(base22(physics_3[i]+energy_3[i]));emotion_2[i]=parseInt(base22(physics_2[i]+energy_2[i]));emotion_1[i]=parseInt(base22(physics_1[i]+energy_1[i]));emotion_all[i]=parseInt(base22(emotion_1[i]+emotion_2[i]+emotion_3[i]+emotion_4[i]+emotion_5[i]+emotion_6[i]+emotion_7[i]));document.getElementById("physics_1").textContent=physics_1[i];document.getElementById("physics_2").textContent=physics_2[i];document.getElementById("physics_3").textContent=physics_3[i];document.getElementById("physics_4").textContent=physics_4[i];document.getElementById("physics_5").textContent=physics_5[i];document.getElementById("physics_6").textContent=physics_6[i];document.getElementById("physics_7").textContent=physics_7[i];document.getElementById("physics_all").textContent=physics_all[i];document.getElementById("energy_1").textContent=energy_1[i];document.getElementById("energy_2").textContent=energy_2[i];document.getElementById("energy_3").textContent=energy_3[i];document.getElementById("energy_4").textContent=energy_4[i];document.getElementById("energy_5").textContent=energy_5[i];document.getElementById("energy_6").textContent=energy_6[i];document.getElementById("energy_7").textContent=energy_7[i];document.getElementById("energy_all").textContent=energy_all[i];document.getElementById("emotion_1").textContent=emotion_1[i];document.getElementById("emotion_2").textContent=emotion_2[i];document.getElementById("emotion_3").textContent=emotion_3[i];document.getElementById("emotion_4").textContent=emotion_4[i];document.getElementById("emotion_5").textContent=emotion_5[i];document.getElementById("emotion_6").textContent=emotion_6[i];document.getElementById("emotion_7").textContent=emotion_7[i];document.getElementById("emotion_all").textContent=emotion_all[i]}
+function calculate_destiny(){let i=0;circle_sky[i]=parseInt(base22(circle_B[i]+circle_D[i]));circle_earth[i]=parseInt(base22(circle_A[i]+circle_C[i]));circle_se_total[i]=parseInt(base22(circle_sky[i]+circle_earth[i]));circle_man[i]=parseInt(base22(circle_F[i]+circle_H[i]));circle_woman[i]=parseInt(base22(circle_G[i]+circle_I[i]));circle_mw_total[i]=parseInt(base22(circle_man[i]+circle_woman[i]));circle_spirit[i]=parseInt(base22(circle_se_total[i]+circle_mw_total[i]));circle_planet[i]=parseInt(base22(circle_mw_total[i]+circle_spirit[i]));document.getElementById("circle_sky_text").textContent=circle_sky[i];document.getElementById("circle_earth_text").textContent=circle_earth[i];document.getElementById("circle_se_total_text").textContent=circle_se_total[i];document.getElementById("circle_man_text").textContent=circle_man[i];document.getElementById("circle_woman_text").textContent=circle_woman[i];document.getElementById("circle_mw_total_text").textContent=circle_mw_total[i];document.getElementById("circle_spirit_text").textContent=circle_spirit[i];document.getElementById("circle_planet_text").textContent=circle_planet[i]}
+function sum22(value){if(value<=22){return value}var result=0;for(var i=0;i<value.length;i++){result+=(value.charCodeAt(i)-48)}return sum22(result.toString())}
+function base22(value){while(value>22){value=sum22(value.toString())}return value}
+document.addEventListener("DOMContentLoaded",function(){const table=document.getElementById("my-table");const button=document.getElementById("toggle-button");button.addEventListener("click",function(){if(table.classList.contains("hidden")){table.classList.remove("hidden");button.textContent="Скрыть таблицу"}else{table.classList.add("hidden");button.textContent="Показать таблицу"}});document.getElementById("download-png").addEventListener("click",async()=>{const svgEl=document.getElementById("svg_x1");const healthEl=document.getElementById("health");const destinyEl=document.getElementById("destiny");const tableEl=document.getElementById("my-table");if(!svgEl){alert("Не найден SVG элемент");return}const tempContainer=document.createElement("div");tempContainer.id="capture-container";tempContainer.style.position="absolute";tempContainer.style.top="-9999px";tempContainer.style.left="0";tempContainer.style.width="1200px";tempContainer.style.background="#FFF9F9";tempContainer.style.padding="50px";tempContainer.classList.add("flex","flex-col","items-center");document.body.appendChild(tempContainer);const title=document.createElement("h1");title.textContent="РАСЧЕТ МАТРИЦЫ СУДЬБЫ";title.className="text-4xl font-extrabold text-center text-[var(--main-color)] leading-tight mb-4";tempContainer.appendChild(title);const subtitle=document.createElement("p");subtitle.textContent="точный калькулятор";subtitle.className="text-xl text-center text-[var(--main-color)] font-normal mb-8";tempContainer.appendChild(subtitle);const ageDisplay=document.createElement("h2");ageDisplay.textContent=document.getElementById("ageDisplay")?.textContent||"";ageDisplay.className="text-[var(--main-color)] text-xl font-bold border-b-2 border-dashed border-[var(--main-color)] mb-8";tempContainer.appendChild(ageDisplay);const matrixBlock=document.createElement("div");matrixBlock.className="w-full flex justify-center items-center mb-8";const matrixWrap=document.createElement("div");matrixWrap.style.position="relative";matrixWrap.style.width="900px";matrixWrap.style.aspectRatio="1/1";const bg=document.createElement("div");bg.style.position="absolute";bg.style.inset="0";bg.style.backgroundImage="url('https://static.tildacdn.com/tild6133-6330-4636-a135-633931353239/svg_1739459496162.svg')";bg.style.backgroundRepeat="no-repeat";bg.style.backgroundSize="contain";bg.style.opacity="1";bg.style.zIndex="0";matrixWrap.appendChild(bg);const clonedSvg=svgEl.cloneNode(true);clonedSvg.style.position="absolute";clonedSvg.style.inset="0";clonedSvg.style.width="100%";clonedSvg.style.height="100%";clonedSvg.style.maxWidth="100%";clonedSvg.style.maxHeight="100%";clonedSvg.style.zIndex="1";matrixWrap.appendChild(clonedSvg);matrixBlock.appendChild(matrixWrap);tempContainer.appendChild(matrixBlock);const tablesContainer=document.createElement("div");tablesContainer.className="grid grid-cols-2 gap-8 w-full";if(healthEl){const healthClone=healthEl.cloneNode(true);tablesContainer.appendChild(healthClone)}if(destinyEl){const destinyClone=destinyEl.cloneNode(true);tablesContainer.appendChild(destinyClone)}tempContainer.appendChild(tablesContainer);if(tableEl&&tableEl.style.display!=="none"){const prognostikaContainer=document.createElement("div");prognostikaContainer.className="w-full mt-8";prognostikaContainer.appendChild(tableEl.cloneNode(true));tempContainer.appendChild(prognostikaContainer)}await new Promise((resolve)=>setTimeout(resolve,300));try{const canvas=await html2canvas(tempContainer,{scale:2,useCORS:true,backgroundColor:"#fff"});const link=document.createElement("a");link.href=canvas.toDataURL("image/png",1.0);link.download="matrix.png";document.body.appendChild(link);link.click();document.body.removeChild(link)}catch(err){console.error("Ошибка при генерации PNG:",err);alert("Не получилось сформировать PNG")}finally{if(tempContainer&&tempContainer.parentNode){tempContainer.parentNode.removeChild(tempContainer)}}})});
+</script>
+</body>
+</html>
